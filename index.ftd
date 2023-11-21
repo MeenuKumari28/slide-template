@@ -1,40 +1,522 @@
--- ds.page: Welcome to doc-site
+-- import: fastn-community.github.io/dark-mode-switcher as dms
+
+-- integer $active-slide: 1
+-- boolean $show-full-screen: true
+
+-- page: Slide Template
+
+-- presentation:
+$current-slide: $active-slide
+max: 12
+
+-- title-and-2-columns: Medium title of 2 columns slide
+image: $assets.files.assets.image-placeholder.png
+left-body: true
+$current-slide: $active-slide
+index: 1
+reset: $active-slide
+
+Medium size font body here...
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+
+-- end: presentation
+
+-- end: page
 
 
-⚡️ `doc-site` will help you create a beautiful documentation site in no time.
-
-It provides out-of-the-box documentation features that can be used to create any
-kind of site(personal website, blog, etc).
-
-[Click here](https://fastn-community.github.io/doc-site/) to read doc-site
-documentation.
-
--- ds.h3: 🚀 Fast Track 
-
-Create your first fastn [web-site](https://fastn.com/expander/hello-world/-/build/) 
-project in just 5 minutes!
-
--- ds.h3: 🌟 Whats next?
-
-Create your first page. 
-[Click here to know more](https://fastn-community.github.io/doc-site/components/page/).
-
--- ds.h3: 👀 Want to learn more?
-
-Feel free to check [our expander course](https://fastn.com/expander/) or jump
-into our [FifthTry Discord server](https://discord.gg/bucrdvptYd).
 
 
--- ds.h3: 🎯 Used by?
 
-Our all documentation sites uses this `doc-site` theme.
 
-- [fastn.com](https://fastn.com/home/)
-- [FifthTry.com](https://www.fifthtry.com/)
 
--- ds.h2: Learn fastn and become a pro?
 
-You are one click away, just check [our documentation](https://fastn.com/) and 
-dont forget to jump into our [FifthTry Discord server](https://discord.gg/bucrdvptYd).
 
--- end: ds.page
+
+-- component page:
+caption title:
+children wrapper:
+
+-- ftd.column:
+width: fill-container
+height: fill-container
+padding.px: 40
+spacing.fixed.px: 24
+background.solid: $inherited.colors.background.base
+
+-- ftd.text: $page.title
+role: $inherited.types.heading-medium
+color: $inherited.colors.text-strong
+
+-- dms.dark-mode-switcher-float:
+
+-- ftd.column:
+width: fill-container
+children: $page.wrapper
+align-content: center
+
+-- end: ftd.column
+
+-- end: ftd.column
+
+-- end: page
+
+
+
+
+
+
+
+
+
+
+
+-- component presentation:
+children wrap:
+integer $current-slide:
+integer max: 12
+integer min: 1
+boolean adjust-position: false
+boolean $mouse-in-left: false
+boolean $mouse-in-right: false
+boolean $mouse-in-full: false
+
+-- ftd.column:
+width: fill-container
+align-content: center
+
+-- ftd.desktop:
+
+-- ftd.column:
+width: fill-container
+width.fixed.px if { !show-full-screen }: 1020
+background.solid: $inherited.colors.background.step-1
+height.fixed.percent: 100
+min-height.fixed.px: 560
+anchor if { $show-full-screen }: window
+left.px: 0
+top.px: 0
+z-index: 1
+$on-global-key[esc]$: $ftd.set-bool($a = $show-full-screen, v = false)
+
+
+-- ftd.row:
+padding.px: 40
+width: fill-container
+height: fill-container
+align-content: center
+min-height.fixed.px: 400
+min-height.fixed.percent if { show-full-screen }: 92
+
+-- ftd.column:
+if: { presentation.current-slide == presentation.min && presentation.current-slide != presentation.max }
+anchor: parent
+$on-global-key[left]$: $decrement-and-clamp($a = $presentation.current-slide, by = 1, min = $presentation.min, max = $presentation.max)
+$on-global-key[right]$: $increment-and-clamp($a = $presentation.current-slide, by = 1, min = $presentation.min, max = $presentation.max)
+
+-- end: ftd.column
+
+-- ftd.column:
+children: $presentation.wrap
+width: fill-container
+align-content: center
+align-self: center
+;;padding-horizontal.px: 12
+z-index: 0
+
+-- end: ftd.column
+
+-- end: ftd.row
+
+-- ftd.row:
+width: fill-container
+background.solid: $inherited.colors.background.step-2
+align-content: center
+padding-vertical.px: 12
+
+-- ftd.column:
+width: fill-container
+align-content: center
+
+-- ftd.row:
+align-content: center
+
+-- ftd.image:
+if: { presentation.current-slide != presentation.min }
+src: $assets.files.assets.left.svg
+src if { presentation.mouse-in-left }: $assets.files.assets.left-active.svg
+$on-click$: $decrement-and-clamp($a = $presentation.current-slide, by = 1, min = $presentation.min, max = $presentation.max)
+align-self: center
+width.fixed.px: 24
+height.fixed.px: 24
+$on-mouse-enter$: $ftd.set-bool($a = $presentation.mouse-in-left, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $presentation.mouse-in-left, v = false)
+
+-- ftd.image:
+if: { presentation.current-slide == presentation.min }
+src: $assets.files.assets.left.svg
+align-self: center
+width.fixed.px: 24
+height.fixed.px: 24
+
+-- ftd.integer: $presentation.current-slide
+color: $inherited.colors.text-strong
+role: $inherited.types.button-small
+style: medium
+padding-horizontal.px: 16 
+
+-- ftd.image:
+if: { presentation.current-slide != presentation.max }
+src: $assets.files.assets.right.svg
+src if { presentation.mouse-in-right }: $assets.files.assets.right-active.svg
+$on-click$: $increment-and-clamp($a = $presentation.current-slide, by = 1, min = $presentation.min, max = $presentation.max)
+align-self: center
+border-radius.px: 100
+width.fixed.px: 24
+height.fixed.px: 24
+$on-mouse-enter$: $ftd.set-bool($a = $presentation.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $presentation.mouse-in-right, v = false)
+
+-- ftd.image:
+if: { presentation.current-slide == presentation.max }
+src: $assets.files.assets.right.svg
+align-self: center
+border-radius.px: 100
+width.fixed.px: 24
+height.fixed.px: 24
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- ftd.column:
+
+-- ftd.image:
+src: $assets.files.assets.full-screen.svg
+src if { presentation.mouse-in-full } : $assets.files.assets.full-screen-active.svg
+$on-click$: $ftd.toggle($a = $show-full-screen)
+$on-mouse-enter$: $ftd.set-bool($a = $presentation.mouse-in-full, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $presentation.mouse-in-full, v = false)
+padding-right.px: 18
+cursor: pointer
+
+-- end: ftd.column
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- end: ftd.desktop
+
+-- ftd.mobile:
+
+-- ftd.column:
+width: fill-container
+background.solid: $inherited.colors.background.step-1
+align-content: center
+height.fixed.percent: 100
+min-height.fixed.px: 400
+anchor if { $show-full-screen }: window
+left.px: 0
+top.px: 0
+z-index: 1
+$on-global-key[esc]$: $ftd.set-bool($a = $show-full-screen, v = false)
+
+-- ftd.column:
+children: $presentation.wrap
+width: fill-container
+z-index: 0
+height: fill-container
+
+-- end: ftd.column
+
+-- ftd.row:
+width: fill-container
+background.solid: $inherited.colors.background.step-2
+align-content: center
+padding-vertical.px: 12
+
+-- ftd.column:
+width: fill-container
+align-content: center
+
+-- ftd.row:
+
+-- ftd.image:
+if: { presentation.current-slide != presentation.min }
+src: $assets.files.assets.left.svg
+src if { presentation.mouse-in-left }: $assets.files.assets.left-active.svg
+$on-click$: $decrement-and-clamp($a = $presentation.current-slide, by = 1, min = $presentation.min, max = $presentation.max)
+align-self: center
+width.fixed.px: 24
+height.fixed.px: 24
+$on-mouse-enter$: $ftd.set-bool($a = $presentation.mouse-in-left, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $presentation.mouse-in-left, v = false)
+
+-- ftd.image:
+if: { presentation.current-slide == presentation.min }
+src: $assets.files.assets.left.svg
+align-self: center
+width.fixed.px: 24
+height.fixed.px: 24
+
+-- ftd.integer: $presentation.current-slide
+color: $inherited.colors.text-strong
+role: $inherited.types.button-small
+style: medium
+padding-horizontal.px: 16 
+
+-- ftd.image:
+if: { presentation.current-slide != presentation.max }
+src: $assets.files.assets.right.svg
+src if { presentation.mouse-in-right }: $assets.files.assets.right-active.svg
+$on-click$: $increment-and-clamp($a = $presentation.current-slide, by = 1, min = $presentation.min, max = $presentation.max)
+align-self: center
+border-radius.px: 100
+width.fixed.px: 24
+height.fixed.px: 24
+$on-mouse-enter$: $ftd.set-bool($a = $presentation.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $presentation.mouse-in-right, v = false)
+
+-- ftd.image:
+if: { presentation.current-slide == presentation.max }
+src: $assets.files.assets.right.svg
+align-self: center
+border-radius.px: 100
+width.fixed.px: 24
+height.fixed.px: 24
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- ftd.column:
+
+-- ftd.image:
+src: $assets.files.assets.full-screen.svg
+src if { presentation.mouse-in-full } : $assets.files.assets.full-screen-active.svg
+$on-click$: $ftd.set-bool($a = $show-full-screen, v = true)
+$on-mouse-enter$: $ftd.set-bool($a = $presentation.mouse-in-full, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $presentation.mouse-in-full, v = false)
+cursor: pointer
+
+-- end: ftd.column
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- end: ftd.mobile
+
+-- end: ftd.column
+
+-- end: presentation
+
+
+
+
+
+
+
+
+
+
+-- component title-and-2-columns:
+caption title:
+optional ftd.image-src image:
+optional body body:
+boolean left-body: false
+optional integer index:
+optional integer reset:
+children slides:
+integer $current-slide:
+integer max: 12
+integer min: 1
+boolean $mouse-in-right: false
+optional ftd.background-image bg-img:
+
+-- ftd.column:
+width: fill-container
+
+-- ftd.desktop:
+
+-- ftd.column:
+if: { title-and-2-columns.index == title-and-2-columns.reset }
+background.image if { title-and-2-columns.bg-img != NULL }: $title-and-2-columns.bg-img
+width: fill-container
+max-height.fixed.px if { !show-full-screen }: 400
+$on-click$: $increment-and-clamp($a = $title-and-2-columns.current-slide, by = 1, min = $title-and-2-columns.min, max = $title-and-2-columns.max)
+$on-mouse-enter$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = false)
+padding.px: 48
+spacing.fixed.px: 32
+
+-- ftd.text: $title-and-2-columns.title
+color: $inherited.colors.text-strong
+role: $inherited.types.heading-hero
+style: bold
+
+-- ftd.row:
+if: { !title-and-2-columns.left-body }
+width: fill-container
+spacing.fixed.px: 24
+
+-- ftd.column:
+width.fixed.percent: 50
+
+-- ftd.image:
+src: $title-and-2-columns.image
+width: fill-container
+width.fixed.px if { !show-full-screen }: 580
+height.fixed.px if { !show-full-screen }: 250
+
+-- end: ftd.column
+
+-- ftd.column:
+width.fixed.percent: 50
+spacing.fixed.px: 24
+
+-- ftd.text: 
+if: { title-and-2-columns.body != NULL }
+color: $inherited.colors.text-strong
+role: $inherited.types.copy-large
+style: medium
+
+$title-and-2-columns.body
+
+-- end: ftd.column
+
+-- end: ftd.row
+
+-- ftd.row:
+if: { title-and-2-columns.left-body }
+width: fill-container
+spacing.fixed.px: 24
+
+-- ftd.column:
+width.fixed.percent: 50
+spacing.fixed.px: 24
+
+-- ftd.text: 
+if: { title-and-2-columns.body != NULL }
+color: $inherited.colors.text-strong
+role: $inherited.types.copy-large
+style: medium
+
+$title-and-2-columns.body
+
+-- end: ftd.column
+
+/-- ftd.column:
+width.fixed.percent: 50
+
+-- ftd.image:
+src: $title-and-2-columns.image
+width: fill-container
+width.fixed.px if { !$show-full-screen }: 580
+height.fixed.px if { !$show-full-screen }: 250
+
+-- end: ftd.column
+
+-- end: ftd.row
+
+-- end: ftd.column
+
+-- end: ftd.desktop
+
+-- ftd.mobile:
+
+-- ftd.column:
+if: { title-and-2-columns.index == title-and-2-columns.reset }
+background.image if { title-and-2-columns.bg-img != NULL }: $title-and-2-columns.bg-img
+width: fill-container
+height: fill-container
+max-height.fixed.px if { !$show-full-screen }: 400
+$on-click$: $increment-and-clamp($a = $title-and-2-columns.current-slide, by = 1, min = $title-and-2-columns.min, max = $title-and-2-columns.max)
+$on-mouse-enter$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = false)
+padding.px: 24
+spacing.fixed.px: 24
+
+-- ftd.text: $title-and-2-columns.title
+color: $inherited.colors.text-strong
+role: $inherited.types.heading-large
+style: bold
+
+-- ftd.column:
+if: { !title-and-2-columns.left-body || $show-full-screen }
+width: fill-container
+spacing.fixed.px: 24
+
+-- ftd.image:
+src: $title-and-2-columns.image
+width: fill-container
+
+-- ftd.text: 
+if: { title-and-2-columns.body != NULL }
+color: $inherited.colors.text-strong
+role: $inherited.types.copy-regular
+style: medium
+
+$title-and-2-columns.body
+
+-- end: ftd.column
+
+-- ftd.column:
+if: { title-and-2-columns.left-body }
+width: fill-container
+spacing.fixed.px: 24
+
+-- ftd.text: 
+if: { title-and-2-columns.body != NULL }
+color: $inherited.colors.text-strong
+role: $inherited.types.copy-small
+style: medium
+
+$title-and-2-columns.body
+
+-- ftd.image:
+src: $title-and-2-columns.image
+width: fill-container
+
+-- end: ftd.column
+
+-- end: ftd.column
+
+-- end: ftd.mobile
+
+-- end: ftd.column
+
+-- end: title-and-2-columns
+
+
+
+
+
+
+
+
+
+-- void increment-and-clamp(a,by,min,max):
+integer $a:
+integer by: 1
+integer min: 0
+integer max: 12
+
+
+a = (((a - min) + by) % ((max+1)- min)) + min
+
+
+
+
+
+-- void decrement-and-clamp(a,by,min,max):
+integer $a:
+integer by: 1
+integer min: 0
+integer max: 12
+
+
+a = (((a - min) - by) % ((max+1)- min)) + min
