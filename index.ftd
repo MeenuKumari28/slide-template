@@ -9,18 +9,18 @@
 $current-slide: $active-slide
 max: 12
 
--- title-and-2-columns: Medium title of 2 columns slide
-image: $assets.files.assets.image-placeholder.png
-left-body: true
+-- slide-page-one: Consectetur Adipiscing
+tag-line: Lorem ipsum dolor sit amet
 $current-slide: $active-slide
 index: 1
 reset: $active-slide
 
-Medium size font body here...
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit
+-- slide-page-two: Consectetur Adipiscing
+topic-list: $common.topic-list
+bg-color: $inherited.colors.background.base
+$current-slide: $active-slide
+index: 2
+reset: $active-slide
 
 -- end: presentation
 
@@ -103,7 +103,6 @@ $on-global-key[esc]$: $ftd.set-bool($a = $show-full-screen, v = false)
 
 
 -- ftd.row:
-padding.px: 40
 width: fill-container
 height: fill-container
 align-content: center
@@ -121,6 +120,7 @@ $on-global-key[right]$: $increment-and-clamp($a = $presentation.current-slide, b
 -- ftd.column:
 children: $presentation.wrap
 width: fill-container
+height: fill-container
 align-content: center
 align-self: center
 ;;padding-horizontal.px: 12
@@ -132,7 +132,7 @@ z-index: 0
 
 -- ftd.row:
 width: fill-container
-background.solid: $inherited.colors.background.step-2
+background.solid: $inherited.colors.custom.ten
 align-content: center
 padding-vertical.px: 12
 
@@ -323,11 +323,9 @@ cursor: pointer
 
 
 
--- component title-and-2-columns:
+-- component slide-page-one:
 caption title:
-optional ftd.image-src image:
-optional body body:
-boolean left-body: false
+string tag-line:
 optional integer index:
 optional integer reset:
 children slides:
@@ -335,161 +333,118 @@ integer $current-slide:
 integer max: 12
 integer min: 1
 boolean $mouse-in-right: false
-optional ftd.background-image bg-img:
 
 -- ftd.column:
-width: fill-container
-
--- ftd.desktop:
-
--- ftd.column:
-if: { title-and-2-columns.index == title-and-2-columns.reset }
-background.image if { title-and-2-columns.bg-img != NULL }: $title-and-2-columns.bg-img
-width: fill-container
-max-height.fixed.px if { !show-full-screen }: 400
-$on-click$: $increment-and-clamp($a = $title-and-2-columns.current-slide, by = 1, min = $title-and-2-columns.min, max = $title-and-2-columns.max)
-$on-mouse-enter$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = true)
-$on-mouse-leave$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = false)
-padding.px: 48
-spacing.fixed.px: 32
-
--- ftd.text: $title-and-2-columns.title
-color: $inherited.colors.text-strong
-role: $inherited.types.heading-hero
-style: bold
-
--- ftd.row:
-if: { !title-and-2-columns.left-body }
-width: fill-container
-spacing.fixed.px: 24
-
--- ftd.column:
-width.fixed.percent: 50
-
--- ftd.image:
-src: $title-and-2-columns.image
-width: fill-container
-width.fixed.px if { !show-full-screen }: 580
-height.fixed.px if { !show-full-screen }: 250
-
--- end: ftd.column
-
--- ftd.column:
-width.fixed.percent: 50
-spacing.fixed.px: 24
-
--- ftd.text: 
-if: { title-and-2-columns.body != NULL }
-color: $inherited.colors.text-strong
-role: $inherited.types.copy-large
-style: medium
-
-$title-and-2-columns.body
-
--- end: ftd.column
-
--- end: ftd.row
-
--- ftd.row:
-if: { title-and-2-columns.left-body }
-width: fill-container
-spacing.fixed.px: 24
-
--- ftd.column:
-width.fixed.percent: 50
-spacing.fixed.px: 24
-
--- ftd.text: 
-if: { title-and-2-columns.body != NULL }
-color: $inherited.colors.text-strong
-role: $inherited.types.copy-large
-style: medium
-
-$title-and-2-columns.body
-
--- end: ftd.column
-
-/-- ftd.column:
-width.fixed.percent: 50
-
--- ftd.image:
-src: $title-and-2-columns.image
-width: fill-container
-width.fixed.px if { !$show-full-screen }: 580
-height.fixed.px if { !$show-full-screen }: 250
-
--- end: ftd.column
-
--- end: ftd.row
-
--- end: ftd.column
-
--- end: ftd.desktop
-
--- ftd.mobile:
-
--- ftd.column:
-if: { title-and-2-columns.index == title-and-2-columns.reset }
-background.image if { title-and-2-columns.bg-img != NULL }: $title-and-2-columns.bg-img
+if: { slide-page-one.index == slide-page-one.reset }
 width: fill-container
 height: fill-container
-max-height.fixed.px if { !$show-full-screen }: 400
-$on-click$: $increment-and-clamp($a = $title-and-2-columns.current-slide, by = 1, min = $title-and-2-columns.min, max = $title-and-2-columns.max)
-$on-mouse-enter$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = true)
-$on-mouse-leave$: $ftd.set-bool($a = $title-and-2-columns.mouse-in-right, v = false)
-padding.px: 24
-spacing.fixed.px: 24
+padding-horizontal.px: 32
+spacing.fixed.px: 12
+background.image: $bg-image
+align-content: left
+align-self: start
+$on-click$: $increment-and-clamp($a = $slide-page-one.current-slide, by = 1, min = $slide-page-one.min, max = $slide-page-one.max)
+$on-mouse-enter$: $ftd.set-bool($a = $slide-page-one.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $slide-page-one.mouse-in-right, v = false)
 
--- ftd.text: $title-and-2-columns.title
-color: $inherited.colors.text-strong
+-- ftd.text: $slide-page-one.title
 role: $inherited.types.heading-large
-style: bold
+color: $inherited.colors.cta-tertiary.text
+
+-- ftd.text: $slide-page-one.tag-line
+role: $inherited.types.copy-large
+color: $inherited.colors.cta-tertiary.text
+
+-- end: ftd.column
+
+-- end: slide-page-one
+
+
+
+
+
+
+
+
+
+
+-- component slide-page-two:
+caption title:
+common.all-topic list topic-list:
+ftd.color bg-color:
+optional integer index:
+optional integer reset:
+children slides:
+integer $current-slide:
+integer max: 12
+integer min: 1
+boolean $mouse-in-right: false
 
 -- ftd.column:
-if: { !title-and-2-columns.left-body || $show-full-screen }
+if: { slide-page-two.index == slide-page-two.reset }
 width: fill-container
-spacing.fixed.px: 24
+height: fill-container
+padding-horizontal.px: 32
+padding-vertical.px: 48
+spacing.fixed.px: 12
+background.solid: $slide-page-two.bg-color
+align-content: top-left
+align-self: start
+$on-click$: $increment-and-clamp($a = $slide-page-two.current-slide, by = 1, min = $slide-page-two.min, max = $slide-page-two.max)
+$on-mouse-enter$: $ftd.set-bool($a = $slide-page-two.mouse-in-right, v = true)
+$on-mouse-leave$: $ftd.set-bool($a = $slide-page-two.mouse-in-right, v = false)
 
--- ftd.image:
-src: $title-and-2-columns.image
-width: fill-container
-
--- ftd.text: 
-if: { title-and-2-columns.body != NULL }
+-- ftd.text: $slide-page-two.title
+role: $inherited.types.heading-large
 color: $inherited.colors.text-strong
-role: $inherited.types.copy-regular
-style: medium
-
-$title-and-2-columns.body
-
--- end: ftd.column
 
 -- ftd.column:
-if: { title-and-2-columns.left-body }
 width: fill-container
-spacing.fixed.px: 24
+spacing.fixed.px: 32
+margin-top.px: 64
 
--- ftd.text: 
-if: { title-and-2-columns.body != NULL }
+-- topic-list-detail: $obj.title
+$loop$: $slide-page-two.topic-list as $obj
+
+-- end: ftd.column
+
+-- end: ftd.column
+
+-- end: slide-page-two
+
+
+
+
+
+
+
+
+
+
+-- component topic-list-detail:
+caption title:
+
+-- ftd.row:
+width.fixed.px: 500
+spacing.fixed.px: 8
+
+-- ftd.row:
+width.fixed.px: 8
+height.fixed.px: 8
+background.solid: $inherited.colors.custom.four
+border-radius.px: 100
+align-self: center
+
+-- end: ftd.row
+
+-- ftd.text: $topic-list-detail.title
+role: $inherited.types.copy-large
 color: $inherited.colors.text-strong
-role: $inherited.types.copy-small
-style: medium
 
-$title-and-2-columns.body
+-- end: ftd.row
 
--- ftd.image:
-src: $title-and-2-columns.image
-width: fill-container
+-- end: topic-list-detail
 
--- end: ftd.column
-
--- end: ftd.column
-
--- end: ftd.mobile
-
--- end: ftd.column
-
--- end: title-and-2-columns
 
 
 
@@ -520,3 +475,12 @@ integer max: 12
 
 
 a = (((a - min) - by) % ((max+1)- min)) + min
+
+
+
+
+
+-- ftd.background-image bg-image:
+src: $assets.files.assets.back1.jpg
+repeat: no-repeat
+fit: contain
